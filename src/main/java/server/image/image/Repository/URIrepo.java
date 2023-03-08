@@ -7,7 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import server.image.image.Model.URI;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+@Repository
 public interface URIrepo extends JpaRepository <URI, Long> {
-    
+
+    Optional<URI> findByuid(Integer uid);
 }

@@ -4,12 +4,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 
 @Entity
 public class URI {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
+    @Column(columnDefinition = "INT")
     private Integer uid;
 
     private String filename;
@@ -20,8 +21,8 @@ public class URI {
         return uid;
     }
 
-    public void setUID(Integer uriString){
-        this.uid = uriString;
+    public void setUID(Integer uidString){
+        this.uid = uidString;
     }
 
     public String getfile(){
