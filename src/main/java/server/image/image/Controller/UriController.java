@@ -34,28 +34,32 @@ public class UriController{
   @GetMapping("/view")
   public ResponseEntity<List<URI>> imageDB(@RequestParam(required = false) String title){
     try{
-      List<URI> uriList = new ArrayList<URI>();
+      Optional<URI> uriList;
 
       if(title == null)
-        URIrepo.findAll().forEach(uriList::add);
-      else
-        URIrepo.findAll().forEach(uriList::add);
-
-      if(uriList.isEmpty()){
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        {
+          //URIrepo.showTables();
+        uriList = URIrepo.selectAllData();}
+      else{
+        //URIrepo.showTables();
+        uriList = URIrepo.selectAllData();
       }
-      return new ResponseEntity<>(uriList, HttpStatus.OK);
-    }
+    
+        if(uriList.isEmpty()){
+          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+      }
     catch(Exception e){
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+      }
 
   }
 
   @GetMapping("/view/{uid}")
-  public ResponseEntity<URI> imageViewUri(@PathVariable("uid") Integer uid){
-    Optional<URI> uriData = URIrepo.findByuid(uid);
-    
+  public ResponseEntity<URI> imageViewUri(@PathVariable("uid") Long uid){
+    Optional<URI> uriData = URIrepo.findById(uid);
+
     if(uriData.isPresent()){
       return new ResponseEntity<>(uriData.get(),HttpStatus.OK);
     }
@@ -64,12 +68,18 @@ public class UriController{
     }
   }
 
-  @GetMapping(value = "/viewsql/{uid}",  produces = { MediaType.APPLICATION_JSON_VALUE })
+  @GetMapping(value = "/viewsql/{uid}")
   public Optional<URI> imageSql(@PathVariable("uid") Integer uid){
-    return URIrepo.findByuid(uid);
+    return URIrepo.findByUid(uid);
+  }
+
+  @GetMapping(value = "/basic")
+  public Optional<URI> basicSql(){
+    return URIrepo.basicSelect();
   }
   /*
   @PostMapping("/view/{uid}")
+
   public URI getImageByUid(@PathVariable("uid") Long uid){
     final URI uri = URI.builder()
   }

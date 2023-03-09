@@ -4,18 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "URI")
 public class URI {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "INT")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uid;
 
     private String filename;
     
-    private String regdate;
+    private String reg_date;
     
     public Integer getUIDInteger(Integer uidInteger){
         return uid;
@@ -34,10 +35,10 @@ public class URI {
     }
 
     public String getDate(){
-        return regdate;
+        return reg_date;
     }
 
     public void setDate(String dateString){
-        this.regdate = dateString;
+        this.reg_date = dateString;
     }
 }
