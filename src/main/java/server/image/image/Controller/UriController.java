@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import server.image.image.Model.URI;
 import server.image.image.Repository.URIrepo;
@@ -69,6 +73,19 @@ public class UriController{
   public Optional<URI> basicSql(){
     return URIrepo.basicSelect();
   }
+
+  @GetMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Object jsonReturn(){
+        Resource resource = new ClassPathResource("/static/json/webjson.json");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(resource.getInputStream(), Object.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
   @PostMapping(value = "/upload")
   public ResponseEntity<String> uploadImage ( @RequestParam("filename") MultipartFile filename ){
