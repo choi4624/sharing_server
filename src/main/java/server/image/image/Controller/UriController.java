@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -15,18 +16,16 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import server.image.image.Model.URI;
 import server.image.image.Repository.URIrepo;
+
 
 @RestController
 @RequestMapping(path="") 
@@ -89,8 +88,18 @@ public class UriController{
     }
 
 
-  @PostMapping(value = "/board/save/upload/{filename}")
-  public ResponseEntity<String> uploadImage ( @RequestParam("filename") MultipartFile filename ){
+  @PostMapping(value = "/test/image/upload")
+  public String fileUpload(@RequestParam("file") MultipartFile file) {
+    
+    
+    return "/image/upload";
+    
+  }
+
+
+  @CrossOrigin
+  @PostMapping(value = "/image/upload")
+  public ResponseEntity<?> uploadImage ( @RequestParam MultipartFile filename ){
     
     Date date = new Date();
     StringBuilder sb = new StringBuilder();
@@ -103,7 +112,7 @@ public class UriController{
     }
 
     if (!filename.isEmpty()) {
-      File dest = new File("image/src/main/storage/webupload/" + sb.toString());
+      File dest = new File("" + sb.toString());
       try {
         filename.transferTo(dest);
       } catch (IllegalStateException e) {
@@ -122,7 +131,7 @@ public class UriController{
 	public ResponseEntity<byte[]> viewEntity(@PathVariable("filename") String filename, @PathVariable("extension") String extension) throws IOException {
 		
 
-    InputStream imageStream = new FileInputStream("image/src/main/storage/webupload/" + filename + "." + extension);
+    InputStream imageStream = new FileInputStream("./image/Storage/webupload/" + filename + "." + extension);
     byte[] imageByteArray = imageStream.readAllBytes();
 		imageStream.close();
 		return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);

@@ -55,4 +55,9 @@ public class MainController {
 	public String uploadString(@ModelAttribute URI uri, HttpServletRequest request) {
 		return "upload";
 	}
+
+  @GetMapping(value = "/image/save/upload")
+  public String uploadPage() {
+    return "upload";
+  }
 }
