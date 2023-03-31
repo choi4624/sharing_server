@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,7 @@ import server.image.image.Model.URI;
 import server.image.image.Repository.URIrepo;
 
 @RestController
+@RequestMapping(path="") 
 public class UriController{
   @Autowired
   private URIrepo URIrepo;
@@ -87,7 +89,7 @@ public class UriController{
     }
 
 
-  @PostMapping(value = "/upload")
+  @PostMapping(value = "/board/save/upload/{filename}")
   public ResponseEntity<String> uploadImage ( @RequestParam("filename") MultipartFile filename ){
     
     Date date = new Date();

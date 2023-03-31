@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-
 import org.springframework.ui.Model;
 
 import server.image.image.Model.URI;
