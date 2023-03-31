@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
@@ -88,15 +89,6 @@ public class UriController{
     }
 
 
-  @PostMapping(value = "/test/image/upload")
-  public String fileUpload(@RequestParam("file") MultipartFile file) {
-    
-    
-    return "/image/upload";
-    
-  }
-
-
   @CrossOrigin
   @PostMapping(value = "/image/upload")
   public ResponseEntity<?> uploadImage ( @RequestParam MultipartFile filename ){
@@ -127,11 +119,14 @@ public class UriController{
 
   }
   
-  @GetMapping(value = "view/{filename}.{extension}", produces = MediaType.IMAGE_PNG_VALUE)
+  @Value("${spring.servlet.multipart.location}")
+  String filePath;
+
+  @GetMapping(value = "/view/{filename}.{extension}", produces = MediaType.IMAGE_PNG_VALUE)
 	public ResponseEntity<byte[]> viewEntity(@PathVariable("filename") String filename, @PathVariable("extension") String extension) throws IOException {
 		
 
-    InputStream imageStream = new FileInputStream("./image/Storage/webupload/" + filename + "." + extension);
+    InputStream imageStream = new FileInputStream(filePath + "/" + filename + "." + extension);
     byte[] imageByteArray = imageStream.readAllBytes();
 		imageStream.close();
 		return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
