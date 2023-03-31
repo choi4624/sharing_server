@@ -107,12 +107,12 @@ public class UriController{
     if (filename.isEmpty()) {
       sb.append("none");
     } else {
-      sb.append(date.getTime());
+      // sb.append(date.getTime()); 현재 시간을 읽는다는게 64bit 형 시간 단위를 가져오는 것 같음
       sb.append(filename.getOriginalFilename());
     }
 
     if (!filename.isEmpty()) {
-      File dest = new File("" + sb.toString());
+      File dest = new File("" + sb.toString()); // 경로와 관련된 부분은 application.properties 을 참고하시오
       try {
         filename.transferTo(dest);
       } catch (IllegalStateException e) {
