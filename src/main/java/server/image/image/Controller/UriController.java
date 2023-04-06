@@ -89,7 +89,6 @@ public class UriController{
     }
 
 
-  @CrossOrigin
   @PostMapping(value = "/image/upload")
   public ResponseEntity<?> uploadImage ( @RequestParam MultipartFile filename ){
     

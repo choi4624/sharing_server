@@ -18,7 +18,6 @@ import org.springframework.ui.Model;
 import server.image.image.Model.URI;
 import server.image.image.Repository.URIrepo;
 
-@CrossOrigin
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/image") // This means URL's start with /demo (after Application path)
 public class MainController {
