@@ -29,7 +29,7 @@ import server.image.image.Repository.URIrepo;
 
 
 @RestController
-@RequestMapping(path="") 
+@RequestMapping(path="image") 
 public class UriController{
   @Autowired
   private URIrepo URIrepo;
@@ -89,7 +89,7 @@ public class UriController{
     }
 
 
-  @PostMapping(value = "/image/upload")
+  @PostMapping(value = "/upload")
   public ResponseEntity<?> uploadImage ( @RequestParam MultipartFile filename ){
     
     Date date = new Date();
