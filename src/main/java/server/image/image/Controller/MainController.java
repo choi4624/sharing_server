@@ -55,7 +55,7 @@ public class MainController {
 		return "upload";
 	}
 
-  @GetMapping(value = "/image/save/upload")
+  @GetMapping(value = "/save/upload")
   public String uploadPage() {
     return "upload";
   }
