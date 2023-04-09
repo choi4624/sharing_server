@@ -18,6 +18,16 @@ public class URI {
     
     private String reg_date;
     
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     public Integer getUIDInteger(Integer uidInteger){
         return uid;
     }
@@ -41,4 +51,6 @@ public class URI {
     public void setDate(String dateString){
         this.reg_date = dateString;
     }
+
+    
 }
