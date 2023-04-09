@@ -6,9 +6,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
@@ -90,40 +93,75 @@ public class UriController{
     }
 
 
+  @Value("${spring.servlet.multipart.location}")
+  String filePath;
+
   @PostMapping(value = "/upload")
-  public ResponseEntity<?> uploadImage ( @RequestParam List<MultipartFile> fList, @RequestParam("content") String contentString, @RequestParam("user") String userString){
+  public ResponseEntity<?> uploadImage ( @RequestParam("filename") List<MultipartFile> fList, @RequestParam(value = "content", required = false) String contentString, @RequestParam(value = "user", required = false) String userString){
     
     SimpleDateFormat SimpleDateFormat = new SimpleDateFormat("yyyyMMdd");
     String current_date = SimpleDateFormat.format(new Date());
-        
-    Date date = new Date();
-    StringBuilder sb = new StringBuilder();
+    boolean SUCCESS = true;
+    System.out.println("simple");
+      for (MultipartFile filename : fList) {
+        System.out.println("multiparts upload");
+          StringBuilder sb = new StringBuilder();
 
-    if (fList.isEmpty()) {
-      sb.append("none");
-    } else {
-      // sb.append(date.getTime()); 현재 시간을 읽는다는게 64bit 형 시간 단위를 가져오는 것 같음
-      sb.append(filename.getOriginalFilename());
-    }
+        String extentionString = getExtension(filename);
 
-    if (!filename.isEmpty()) {
-      File dest = new File("" + sb.toString()); // 경로와 관련된 부분은 application.properties 을 참고하시오
-      try {
-        filename.transferTo(dest);
-      } catch (IllegalStateException e) {
-         e.printStackTrace();
-      } catch (IOException e) {
-         e.printStackTrace();
+        if (filename.isEmpty()) {
+          sb.append(current_date);
+          sb.append("_"+new Date());
+        } else {
+          // sb.append(current_date); //현재 시간을 읽는다는게 64bit 형 시간 단위를 가져오는 것 같음
+          sb.append(filename.getOriginalFilename());
+        }
+
+        if (!filename.isEmpty()) {
+          File dest = new File("" + sb.toString()); // 경로와 관련된 부분은 application.properties 을 참고하시오
+          try {
+            filename.transferTo(dest);
+          } catch (IllegalStateException e) {
+            e.printStackTrace();
+            SUCCESS = false;
+            System.out.println("err in state");
+          } catch (IOException e) {
+            e.printStackTrace();
+            SUCCESS = false;
+            System.out.println("err in IO");
+          }
+        }
+
+        if (!filename.isEmpty()) {
+          System.out.println("uri try");
+          URI uri = new URI();
+          uri.setImage_uid(null);
+          URIrepo.save(uri);
+          uri.setFile(sb.toString());
+          uri.setDate(current_date);
+          uri.setContentType(extentionString);
+          URIrepo.save(uri);
+          
+
+
+        }
+
       }
-    
-    return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);  
+
+    if (SUCCESS) {
+      return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);        
     }
-    return new ResponseEntity<String>("ERROR in upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    else{
+      return new ResponseEntity<String>("ERROR in upload", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
   }
   
-  @Value("${spring.servlet.multipart.location}")
-  String filePath;
+  public String getExtension(MultipartFile multipartFile) {
+    String extension = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+    return extension;
+}
+
 
   @GetMapping(value = "/view/{filename}.{extension}", produces = MediaType.IMAGE_PNG_VALUE)
 	public ResponseEntity<byte[]> viewEntity(@PathVariable("filename") String filename, @PathVariable("extension") String extension) throws IOException {

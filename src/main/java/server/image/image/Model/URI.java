@@ -12,18 +12,28 @@ import jakarta.persistence.Column;
 public class URI {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer uid;
+    private Integer Image_uid;
+
+    public Integer getImage_uid() {
+        return Image_uid;
+    }
+
+    public void setImage_uid(Integer image_uid) {
+        Image_uid = image_uid;
+    }
 
     private String filename;
     
     private String reg_date;
     
-    public Integer getUIDInteger(Integer uidInteger){
-        return uid;
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setUID(Integer uidString){
-        this.uid = uidString;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public String getfile(){
@@ -41,4 +51,6 @@ public class URI {
     public void setDate(String dateString){
         this.reg_date = dateString;
     }
+
+    
 }

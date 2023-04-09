@@ -31,7 +31,7 @@ public class MainController {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
           URI info = new URI();
-          info.setUID(uriString);
+          info.setImage_uid(uriString);
           info.setFile(fileString);
           URIrepo.save(info);
       return "Saved";

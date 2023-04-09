@@ -14,16 +14,16 @@ import java.util.Optional;
 
 @Repository
 public interface URIrepo extends JpaRepository <URI, Long> {
-    @Query(value = "Select uid, filename, reg_date FROM URI WHERE UID = ?1", nativeQuery = true)
-    Optional<URI> findByUid(@Param("_uid") Long uid);
+    @Query(value = "Select Image_uid, filename, reg_date, contentType FROM URI WHERE Image_uid = ?1", nativeQuery = true)
+    Optional<URI> findByUid(@Param("_Image_uid") Long uid);
 
-    @Query(value = "select uid from URI", nativeQuery = true)
+    @Query(value = "select Image_uid from URI", nativeQuery = true)
     public Optional<URI> showTables();
 
-    @Query(value = "select uid, filename, reg_date from URI", nativeQuery = true)
+    @Query(value = "select Image_uid, filename, reg_date, contentType from URI", nativeQuery = true)
     public Optional<URI> selectAllData();
 
 
-    @Query(value = "Select uid, filename, reg_date FROM URI WHERE UID = 100000", nativeQuery = true)
+    @Query(value = "Select Image_uid, filename, reg_date, contentType FROM URI WHERE Image_uid = 100000", nativeQuery = true)
     Optional<URI> basicSelect();
 }
