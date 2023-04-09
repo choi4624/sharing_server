@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -90,12 +91,15 @@ public class UriController{
 
 
   @PostMapping(value = "/upload")
-  public ResponseEntity<?> uploadImage ( @RequestParam MultipartFile filename ){
+  public ResponseEntity<?> uploadImage ( @RequestParam List<MultipartFile> fList, @RequestParam("content") String contentString, @RequestParam("user") String userString){
     
+    SimpleDateFormat SimpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+    String current_date = SimpleDateFormat.format(new Date());
+        
     Date date = new Date();
     StringBuilder sb = new StringBuilder();
 
-    if (filename.isEmpty()) {
+    if (fList.isEmpty()) {
       sb.append("none");
     } else {
       // sb.append(date.getTime()); 현재 시간을 읽는다는게 64bit 형 시간 단위를 가져오는 것 같음
