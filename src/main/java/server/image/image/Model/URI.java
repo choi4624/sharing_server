@@ -23,10 +23,20 @@ public class URI {
     }
 
     private String filename;
-    
+
     private String reg_date;
-    
+
     private String contentType;
+
+    private String userNickName;
+
+    public String getUserNickName() {
+        return userNickName;
+    }
+
+    public void setUserNickName(String userNickName) {
+        this.userNickName = userNickName;
+    }
 
     public String getContentType() {
         return contentType;
@@ -36,21 +46,20 @@ public class URI {
         this.contentType = contentType;
     }
 
-    public String getfile(){
+    public String getfile() {
         return filename;
     }
 
-    public void setFile(String nameString){
+    public void setFile(String nameString) {
         this.filename = nameString;
     }
 
-    public String getDate(){
+    public String getDate() {
         return reg_date;
     }
 
-    public void setDate(String dateString){
+    public void setDate(String dateString) {
         this.reg_date = dateString;
     }
 
-    
 }

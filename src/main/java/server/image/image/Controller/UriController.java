@@ -93,7 +93,7 @@ public class UriController {
   @PostMapping(value = "/upload")
   public ResponseEntity<?> uploadImage(@RequestParam("filename") List<MultipartFile> fList,
       @RequestParam(value = "content", required = false) String contentString,
-      @RequestParam(value = "user", required = false) String userString) {
+      @RequestParam(value = "user", required = false, defaultValue = "i4624") String userString) {
 
     SimpleDateFormat SimpleDateFormat = new SimpleDateFormat("yyyyMMdd");
     String current_date = SimpleDateFormat.format(new Date());
@@ -172,7 +172,7 @@ public class UriController {
    * }
    */
 
-  @GetMapping(value = "/view/imageid/{uid}", produces = MediaType.IMAGE_PNG_VALUE)
+  @GetMapping(value = "/imageid/{uid}", produces = MediaType.IMAGE_PNG_VALUE)
   public ResponseEntity<?> viewEntity(@PathVariable("uid") Long uid) throws IOException {
     Optional<URI> uriData = URIrepo.findById(uid);
 
@@ -190,4 +190,16 @@ public class UriController {
     imageStream.close();
     return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
   }
+
+  @GetMapping(value = "/sql/recent/{username}/{count}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Object uploadList(@PathVariable("count") Integer count, @PathVariable("username") String usernameString) {
+
+    System.out.println(usernameString);
+    System.out.println(count);
+    List<?> uriData = URIrepo.recentUpload(usernameString, count);
+
+    return uriData;
+
+  }
+
 }
