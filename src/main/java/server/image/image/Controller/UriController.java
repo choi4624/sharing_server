@@ -173,13 +173,19 @@ public class UriController {
    */
 
   @GetMapping(value = "/view/imageid/{uid}", produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<byte[]> viewEntity(@PathVariable("uid") Long uid) throws IOException {
+  public ResponseEntity<?> viewEntity(@PathVariable("uid") Long uid) throws IOException {
     Optional<URI> uriData = URIrepo.findById(uid);
 
     String filename = uriData.get().getfile().toString();
     String extension = uriData.get().getContentType().toString();
+    try {
+      System.out
+          .println("file name is " + filename + "file extension is " + extension + " \n !!sql successfully loaded!!");
+    } catch (Exception e) {
+      return new ResponseEntity<String>(" sql viewing in error, may be no data", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
-    InputStream imageStream = new FileInputStream(filePath + "/" + filename + "." + extension);
+    InputStream imageStream = new FileInputStream(filePath + "/" + filename);
     byte[] imageByteArray = imageStream.readAllBytes();
     imageStream.close();
     return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
