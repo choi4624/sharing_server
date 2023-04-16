@@ -174,8 +174,8 @@ public class UriController {
       if (!filename.isEmpty()) {
         System.out.println("uri try");
         URI uri = new URI();
-        uri.setImage_uid(null);
         URIrepo.save(uri);
+        uri.setImage_uid(uri.getImage_uid());
         uri.setFile(sb.toString());
         uri.setDate(current_date);
         uri.setContentType(extentionString);

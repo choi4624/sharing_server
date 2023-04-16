@@ -8,18 +8,19 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "URI")
+@Table(name = "uri")
 public class URI {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Image_uid;
+    private Integer imageUid;
 
     public Integer getImage_uid() {
-        return Image_uid;
+        return imageUid;
     }
 
-    public void setImage_uid(Integer image_uid) {
-        Image_uid = image_uid;
+    public void setImage_uid(Integer imageUid) {
+        this.imageUid = imageUid;
     }
 
     private String filename;
